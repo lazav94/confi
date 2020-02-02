@@ -5,6 +5,7 @@ dotenv.config();
 import logger from "./services/logger";
 import connectDB from "./services/db";
 import swaggerRoutes from "./swagger";
+import routes from "./routes";
 
 const port: number = parseInt(process.env.PORT || "8080", 10);
 
@@ -15,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
-// require("./routes")(expressServer);
+routes(app);
 
 app.use("/", swaggerRoutes);
 

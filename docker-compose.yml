@@ -1,10 +1,12 @@
-version: '2.1'
+version: "2.1"
 
 services:
   confi:
     image: confi
     build: .
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
+    env_file:
+      - .env
     ports:
       - 8080:8080

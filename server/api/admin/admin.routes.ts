@@ -3,10 +3,6 @@ import { login, listBookings, deleteBooking } from "./admin.controller";
 
 const router = Router();
 
-router
-    .post("/login", login)
-    .get('/list', listBookings)
-    .delete('/delete', deleteBooking)
-;
+router.post("/login", login);
 
 export default router;

@@ -1,5 +1,11 @@
-import { Router } from "express";
+import { Application } from "express";
+import adminRoutes from "./api/admin/admin.routes";
+import conferenceRoutes from "./api/conference/conference.routes";
+import bookingRoutes from "./api/booking/booking.routes";
 
-const router = Router();
-
-export default router;
+export default (app: Application): void => {
+  app
+    .use("/admin", adminRoutes)
+    .use("/conference", conferenceRoutes)
+    .use("/booking", bookingRoutes);
+};
