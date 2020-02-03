@@ -1,1 +1,1 @@
-{"version":3,"file":"conference.service.d.ts","sourceRoot":"","sources":["../../../server/api/conference/conference.service.ts"],"names":[],"mappings":"AAAA,OAAmB,EAAE,WAAW,EAAE,MAAM,oBAAoB,CAAC;;;;;;;AAoB7D,wBAKE"}
+{"version":3,"file":"conference.service.d.ts","sourceRoot":"","sources":["../../../server/api/conference/conference.service.ts"],"names":[],"mappings":"AAAA,OAAmB,EAAE,WAAW,EAAE,MAAM,oBAAoB,CAAC;;;;;;;;AAwB7D,wBAME"}

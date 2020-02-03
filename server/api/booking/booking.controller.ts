@@ -1,11 +1,11 @@
+// TODO use custome solution instead validator
+import validator from "validator";
 import { Request, Response } from "express";
+// TODO maybe use jwt instead or custome algorithm for hash checking
+import bcrypt from "bcrypt";
 import logger from "../../services/logger";
 import BookingService from "./booking.service";
 import { IBooking } from "./booking.model";
-// TODO maybe use jwt instead or custome algorithm for hasing
-import bcrypt from "bcrypt";
-// TODO use custome solution instead validator
-import validator from "validator";
 
 import UserRegisterBody from "../../models/userRegisterBody.model";
 import ErrorObject from "../../models/error.model";
@@ -29,12 +29,14 @@ export const getBookingById = async (req: Request, res: Response) => {
     return res.send({ error: true, errorObject: error }).status(400);
   }
 };
+
+// TODO don't expose this
+// TODO change how to call it (not API)
 export const createBooking = async (req: Request, res: Response) => {
   try {
     const newBooking: IBooking | null = await BookingService.createBooking(
       req.body
     );
-
     res.send(newBooking).status(200);
   } catch (error) {
     return res.send({ error: true, errorObject: error }).status(400);
@@ -84,13 +86,14 @@ const checkEmptyFields = (fields: UserRegisterBody) => {
   };
 };
 
+const generateURL = () => `${req.host}/booking/${uuid}`;
 // Admin login
 export function register(req: Request, res: Response) {
   // TODO call service (DB handing)
 
   const errorObject: ErrorObject = checkEmptyFields(req.body);
 
-  const { firstName, lastName, email, phone } = req.body;
+  const { firstname, lastname, email, phone, conferenceid } = req.body;
 
   if (!validator.isEmail(email)) {
     errorObject.errorMessage += "Not valid email format";
@@ -103,10 +106,16 @@ export function register(req: Request, res: Response) {
     return res.status(400).send(errorObject);
   }
 
-  // const criptedPassword = await bcrypt.decode(password);
+  // Generate URL with tocken
+  // Send email with tocken
 
-  // Get user from db by username
-  // compare passwords
-  // 200 or not good
   res.sendStatus(200);
 }
+
+export const verifyBooking = (req, res) => {
+  // Check valid token
+  // mark bookin as verified
+  res.sendStatus(200);
+};
+
+// TODO implement verifiaation route

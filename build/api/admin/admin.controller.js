@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,24 +7,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const bcrypt_1 = require("bcrypt");
-const admin_service_1 = __importDefault(require("./admin.service"));
-const saltRounds = parseInt(process.env.SALT_ROUNDS || "9", 10);
+import { compare } from "bcrypt";
+import adminService from "./admin.service";
+// const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || "9", 10);
 // Admin login
-function login(req, res) {
+export function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         // TODO call service (DB handing)
         const { username, password } = req.body;
-        const admin = yield admin_service_1.default.getAdminByUsername(username);
+        const admin = yield adminService.getAdminByUsername(username);
         if (admin) {
             res.sendStatus(200);
-            const match = yield bcrypt_1.compare(password, admin.password);
+            const match = yield compare(password, admin.password);
             if (match) {
                 // Login
+                // Add session - this can be token (simple for now)
+                req.session.admin = true;
                 return res.send(200);
             }
             return res
@@ -35,14 +32,10 @@ function login(req, res) {
         res.send({ error: true, errorMessage: "No matching user " });
     });
 }
-exports.login = login;
-function listBookings(req, res) {
-    // get booking from db
-    // send to frontend
+export function logout(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // logout
+        req.session.admin = null;
+    });
 }
-exports.listBookings = listBookings;
-function deleteBooking(req, res) {
-    // delete booking by req.body.id
-}
-exports.deleteBooking = deleteBooking;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYWRtaW4uY29udHJvbGxlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NlcnZlci9hcGkvYWRtaW4vYWRtaW4uY29udHJvbGxlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7OztBQUNBLG1DQUFpQztBQUNqQyxvRUFBMkM7QUFHM0MsTUFBTSxVQUFVLEdBQUcsUUFBUSxDQUFDLE9BQU8sQ0FBQyxHQUFHLENBQUMsV0FBVyxJQUFJLEdBQUcsRUFBRSxFQUFFLENBQUMsQ0FBQztBQUNoRSxjQUFjO0FBQ2QsU0FBc0IsS0FBSyxDQUFDLEdBQVksRUFBRSxHQUFhOztRQUNyRCxpQ0FBaUM7UUFFakMsTUFBTSxFQUFFLFFBQVEsRUFBRSxRQUFRLEVBQUUsR0FBRyxHQUFHLENBQUMsSUFBSSxDQUFDO1FBRXhDLE1BQU0sS0FBSyxHQUFrQixNQUFNLHVCQUFZLENBQUMsa0JBQWtCLENBQUMsUUFBUSxDQUFDLENBQUM7UUFDN0UsSUFBSSxLQUFLLEVBQUU7WUFDVCxHQUFHLENBQUMsVUFBVSxDQUFDLEdBQUcsQ0FBQyxDQUFDO1lBQ3BCLE1BQU0sS0FBSyxHQUFHLE1BQU0sZ0JBQU8sQ0FBQyxRQUFRLEVBQUUsS0FBSyxDQUFDLFFBQVEsQ0FBQyxDQUFDO1lBQ3RELElBQUksS0FBSyxFQUFFO2dCQUNULFFBQVE7Z0JBQ1IsT0FBTyxHQUFHLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDO2FBQ3RCO1lBQ0QsT0FBTyxHQUFHO2lCQUNQLElBQUksQ0FBQyxFQUFFLEtBQUssRUFBRSxJQUFJLEVBQUUsWUFBWSxFQUFFLGdCQUFnQixFQUFFLENBQUM7aUJBQ3JELE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQztTQUNoQjtRQUNELEdBQUcsQ0FBQyxJQUFJLENBQUMsRUFBRSxLQUFLLEVBQUUsSUFBSSxFQUFFLFlBQVksRUFBRSxtQkFBbUIsRUFBRSxDQUFDLENBQUM7SUFDL0QsQ0FBQztDQUFBO0FBbEJELHNCQWtCQztBQUVELFNBQWdCLFlBQVksQ0FBQyxHQUFZLEVBQUUsR0FBYTtJQUN0RCxzQkFBc0I7SUFDdEIsbUJBQW1CO0FBQ3JCLENBQUM7QUFIRCxvQ0FHQztBQUVELFNBQWdCLGFBQWEsQ0FBQyxHQUFZLEVBQUUsR0FBYTtJQUN2RCxnQ0FBZ0M7QUFDbEMsQ0FBQztBQUZELHNDQUVDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYWRtaW4uY29udHJvbGxlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NlcnZlci9hcGkvYWRtaW4vYWRtaW4uY29udHJvbGxlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFBQSxPQUFPLEVBQUUsT0FBTyxFQUFFLE1BQU0sUUFBUSxDQUFDO0FBRWpDLE9BQU8sWUFBWSxNQUFNLGlCQUFpQixDQUFDO0FBRzNDLG9FQUFvRTtBQUVwRSxjQUFjO0FBQ2QsTUFBTSxVQUFnQixLQUFLLENBQUMsR0FBWSxFQUFFLEdBQWE7O1FBQ3JELGlDQUFpQztRQUVqQyxNQUFNLEVBQUUsUUFBUSxFQUFFLFFBQVEsRUFBRSxHQUFHLEdBQUcsQ0FBQyxJQUFJLENBQUM7UUFFeEMsTUFBTSxLQUFLLEdBQWtCLE1BQU0sWUFBWSxDQUFDLGtCQUFrQixDQUFDLFFBQVEsQ0FBQyxDQUFDO1FBQzdFLElBQUksS0FBSyxFQUFFO1lBQ1QsR0FBRyxDQUFDLFVBQVUsQ0FBQyxHQUFHLENBQUMsQ0FBQztZQUNwQixNQUFNLEtBQUssR0FBRyxNQUFNLE9BQU8sQ0FBQyxRQUFRLEVBQUUsS0FBSyxDQUFDLFFBQVEsQ0FBQyxDQUFDO1lBQ3RELElBQUksS0FBSyxFQUFFO2dCQUNULFFBQVE7Z0JBQ1IsbURBQW1EO2dCQUNuRCxHQUFHLENBQUMsT0FBTyxDQUFDLEtBQUssR0FBRyxJQUFJLENBQUM7Z0JBQ3pCLE9BQU8sR0FBRyxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsQ0FBQzthQUN0QjtZQUNELE9BQU8sR0FBRztpQkFDUCxJQUFJLENBQUMsRUFBRSxLQUFLLEVBQUUsSUFBSSxFQUFFLFlBQVksRUFBRSxnQkFBZ0IsRUFBRSxDQUFDO2lCQUNyRCxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUM7U0FDaEI7UUFDRCxHQUFHLENBQUMsSUFBSSxDQUFDLEVBQUUsS0FBSyxFQUFFLElBQUksRUFBRSxZQUFZLEVBQUUsbUJBQW1CLEVBQUUsQ0FBQyxDQUFDO0lBQy9ELENBQUM7Q0FBQTtBQUVELE1BQU0sVUFBZ0IsTUFBTSxDQUFDLEdBQVksRUFBRSxHQUFhOztRQUN0RCxTQUFTO1FBQ1QsR0FBRyxDQUFDLE9BQU8sQ0FBQyxLQUFLLEdBQUcsSUFBSSxDQUFDO0lBQzNCLENBQUM7Q0FBQSJ9

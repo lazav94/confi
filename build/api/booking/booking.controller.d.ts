@@ -5,4 +5,5 @@ export declare const createBooking: (req: Request<import("express-serve-static-c
 export declare const updateBooking: (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) => Promise<Response | undefined>;
 export declare const deleteBookingById: (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) => Promise<Response | undefined>;
 export declare function register(req: Request, res: Response): Response | undefined;
+export declare const verifyBooking: (req: any, res: any) => void;
 //# sourceMappingURL=booking.controller.d.ts.map

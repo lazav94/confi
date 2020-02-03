@@ -3,7 +3,6 @@ import Booking, { IBooking } from "./booking.model";
 const getAllBookings = async (): Promise<Array<IBooking>> => Booking.find();
 // .lean()
 
-//  Admin should be able to list bookings
 const getBookingById = async (id: string): Promise<IBooking | null> =>
   Booking.findById(id);
 

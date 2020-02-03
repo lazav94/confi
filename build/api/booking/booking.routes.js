@@ -1,14 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const booking_controller_1 = require("./booking.controller");
-const router = express_1.Router();
-// TODO generate midleware to save session, only admin with the active session can list and delete booking
+import { Router } from "express";
+import { haveAccess } from "../../services/middleware";
+import { getAllBookings, getBookingById, updateBooking, deleteBookingById, verifyBooking } from "./booking.controller";
+const router = Router();
 router
-    .get("/list", booking_controller_1.getAllBookings)
-    .get("/:id", booking_controller_1.getBookingById)
-    .put("/", booking_controller_1.createBooking)
-    .post("/", booking_controller_1.updateBooking)
-    .delete("/:id", booking_controller_1.deleteBookingById);
-exports.default = router;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYm9va2luZy5yb3V0ZXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zZXJ2ZXIvYXBpL2Jvb2tpbmcvYm9va2luZy5yb3V0ZXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxxQ0FBaUM7QUFDakMsNkRBTThCO0FBRTlCLE1BQU0sTUFBTSxHQUFHLGdCQUFNLEVBQUUsQ0FBQztBQUV4QiwwR0FBMEc7QUFFMUcsTUFBTTtLQUNILEdBQUcsQ0FBQyxPQUFPLEVBQUUsbUNBQWMsQ0FBQztLQUM1QixHQUFHLENBQUMsTUFBTSxFQUFFLG1DQUFjLENBQUM7S0FDM0IsR0FBRyxDQUFDLEdBQUcsRUFBRSxrQ0FBYSxDQUFDO0tBQ3ZCLElBQUksQ0FBQyxHQUFHLEVBQUUsa0NBQWEsQ0FBQztLQUN4QixNQUFNLENBQUMsTUFBTSxFQUFFLHNDQUFpQixDQUFDLENBQUM7QUFFckMsa0JBQWUsTUFBTSxDQUFDIn0=
+    //  Admin should be able to list bookings
+    .get("/list", haveAccess, getAllBookings)
+    .get("/:id", haveAccess, getBookingById)
+    // .put("/", haveAccess, createBooking)
+    .post("/", haveAccess, updateBooking)
+    // Admin should be able to delete a booking
+    .delete("/:id", haveAccess, deleteBookingById)
+    .get("/:token", verifyBooking);
+export default router;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYm9va2luZy5yb3V0ZXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zZXJ2ZXIvYXBpL2Jvb2tpbmcvYm9va2luZy5yb3V0ZXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLE1BQU0sRUFBRSxNQUFNLFNBQVMsQ0FBQztBQUNqQyxPQUFPLEVBQUUsVUFBVSxFQUFFLE1BQU0sMkJBQTJCLENBQUM7QUFDdkQsT0FBTyxFQUNMLGNBQWMsRUFDZCxjQUFjLEVBRWQsYUFBYSxFQUNiLGlCQUFpQixFQUNqQixhQUFhLEVBQ2QsTUFBTSxzQkFBc0IsQ0FBQztBQUU5QixNQUFNLE1BQU0sR0FBRyxNQUFNLEVBQUUsQ0FBQztBQUV4QixNQUFNO0lBQ0oseUNBQXlDO0tBQ3hDLEdBQUcsQ0FBQyxPQUFPLEVBQUUsVUFBVSxFQUFFLGNBQWMsQ0FBQztLQUN4QyxHQUFHLENBQUMsTUFBTSxFQUFFLFVBQVUsRUFBRSxjQUFjLENBQUM7SUFDeEMsdUNBQXVDO0tBQ3RDLElBQUksQ0FBQyxHQUFHLEVBQUUsVUFBVSxFQUFFLGFBQWEsQ0FBQztJQUNyQywyQ0FBMkM7S0FDMUMsTUFBTSxDQUFDLE1BQU0sRUFBRSxVQUFVLEVBQUUsaUJBQWlCLENBQUM7S0FDN0MsR0FBRyxDQUFDLFNBQVMsRUFBRSxhQUFhLENBQUMsQ0FBQztBQUVqQyxlQUFlLE1BQU0sQ0FBQyJ9

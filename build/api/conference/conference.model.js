@@ -1,16 +1,7 @@
-"use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importStar(require("mongoose"));
-const conferenceUser = new mongoose_1.Schema({
+import mongoose, { Schema } from "mongoose";
+const conferenceUser = new Schema({
     name: String,
     date: Date // Date of a conference
 });
-exports.default = mongoose_1.default.model("Conference", conferenceUser);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmVyZW5jZS5tb2RlbC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NlcnZlci9hcGkvY29uZmVyZW5jZS9jb25mZXJlbmNlLm1vZGVsLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQUFBLHFEQUFzRDtBQU90RCxNQUFNLGNBQWMsR0FBVyxJQUFJLGlCQUFNLENBQUM7SUFDeEMsSUFBSSxFQUFFLE1BQU07SUFDWixJQUFJLEVBQUUsSUFBSSxDQUFDLHVCQUF1QjtDQUNuQyxDQUFDLENBQUM7QUFFSCxrQkFBZSxrQkFBUSxDQUFDLEtBQUssQ0FBYyxZQUFZLEVBQUUsY0FBYyxDQUFDLENBQUMifQ==
+export default mongoose.model("Conference", conferenceUser);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmVyZW5jZS5tb2RlbC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NlcnZlci9hcGkvY29uZmVyZW5jZS9jb25mZXJlbmNlLm1vZGVsLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sUUFBUSxFQUFFLEVBQUUsTUFBTSxFQUFZLE1BQU0sVUFBVSxDQUFDO0FBT3RELE1BQU0sY0FBYyxHQUFXLElBQUksTUFBTSxDQUFDO0lBQ3hDLElBQUksRUFBRSxNQUFNO0lBQ1osSUFBSSxFQUFFLElBQUksQ0FBQyx1QkFBdUI7Q0FDbkMsQ0FBQyxDQUFDO0FBRUgsZUFBZSxRQUFRLENBQUMsS0FBSyxDQUFjLFlBQVksRUFBRSxjQUFjLENBQUMsQ0FBQyJ9

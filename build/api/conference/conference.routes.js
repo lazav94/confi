@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const conference_controller_1 = require("./conference.controller");
-const router = express_1.Router();
+import { Router } from "express";
+import { getConferenceById, createConference, updateConference, deleteConferenceById } from "./conference.controller";
+const router = Router();
 router
-    .get("/:id", conference_controller_1.getConferenceById)
-    .put("/", conference_controller_1.createConference)
-    .post("/", conference_controller_1.updateConference)
-    .delete("/:id", conference_controller_1.deleteConferenceById);
-exports.default = router;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmVyZW5jZS5yb3V0ZXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zZXJ2ZXIvYXBpL2NvbmZlcmVuY2UvY29uZmVyZW5jZS5yb3V0ZXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxxQ0FBaUM7QUFDakMsbUVBS2lDO0FBRWpDLE1BQU0sTUFBTSxHQUFHLGdCQUFNLEVBQUUsQ0FBQztBQUV4QixNQUFNO0tBQ0gsR0FBRyxDQUFDLE1BQU0sRUFBRSx5Q0FBaUIsQ0FBQztLQUM5QixHQUFHLENBQUMsR0FBRyxFQUFFLHdDQUFnQixDQUFDO0tBQzFCLElBQUksQ0FBQyxHQUFHLEVBQUUsd0NBQWdCLENBQUM7S0FDM0IsTUFBTSxDQUFDLE1BQU0sRUFBRSw0Q0FBb0IsQ0FBQyxDQUFDO0FBRXhDLGtCQUFlLE1BQU0sQ0FBQyJ9
+    .get("/:id", getConferenceById)
+    .put("/", createConference)
+    .post("/", updateConference)
+    .delete("/:id", deleteConferenceById);
+export default router;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmVyZW5jZS5yb3V0ZXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zZXJ2ZXIvYXBpL2NvbmZlcmVuY2UvY29uZmVyZW5jZS5yb3V0ZXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLE1BQU0sRUFBRSxNQUFNLFNBQVMsQ0FBQztBQUNqQyxPQUFPLEVBQ0wsaUJBQWlCLEVBQ2pCLGdCQUFnQixFQUNoQixnQkFBZ0IsRUFDaEIsb0JBQW9CLEVBQ3JCLE1BQU0seUJBQXlCLENBQUM7QUFFakMsTUFBTSxNQUFNLEdBQUcsTUFBTSxFQUFFLENBQUM7QUFFeEIsTUFBTTtLQUNILEdBQUcsQ0FBQyxNQUFNLEVBQUUsaUJBQWlCLENBQUM7S0FDOUIsR0FBRyxDQUFDLEdBQUcsRUFBRSxnQkFBZ0IsQ0FBQztLQUMxQixJQUFJLENBQUMsR0FBRyxFQUFFLGdCQUFnQixDQUFDO0tBQzNCLE1BQU0sQ0FBQyxNQUFNLEVBQUUsb0JBQW9CLENBQUMsQ0FBQztBQUV4QyxlQUFlLE1BQU0sQ0FBQyJ9

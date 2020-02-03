@@ -1,6 +1,6 @@
+import { Request, Response } from "express";
 import logger from "../../services/logger";
 import conferenceService from "./conference.service";
-import { Request, Response } from "express";
 import { IConference } from "./conference.model";
 
 export const getConferenceById = async (req: Request, res: Response) => {
@@ -14,6 +14,19 @@ export const getConferenceById = async (req: Request, res: Response) => {
     return res.send({ error: true, errorObject: error }).status(400);
   }
 };
+
+export const hasConferenceWithId = async (id: string): Promise<boolean> => {
+  try {
+    const conference: IConference | null = await conferenceService.getConferenceByIdLean(
+      id
+    );
+    return !!conference;
+  } catch (error) {
+    logger.error("Has Conference with Id error: ", error);
+    return false;
+  }
+};
+
 export const createConference = async (req: Request, res: Response) => {
   try {
     const newConference: IConference | null = await conferenceService.createConference(

@@ -1,18 +1,13 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const logger_1 = __importDefault(require("./logger"));
+import mongoose from "mongoose";
+import logger from "./logger";
 const dbOptions = {
     useUnifiedTopology: true,
     useNewUrlParser: true
 };
-mongoose_1.default.connection.on("error", (err) => logger_1.default.error("Mongoose error:", err));
-mongoose_1.default.connection.on("connected", () => logger_1.default.info("Connection to DB established successfully"));
-mongoose_1.default.Promise = global.Promise;
-exports.default = () => {
-    mongoose_1.default.connect(process.env.MONGO_URI || "", dbOptions);
+mongoose.connection.on("error", (err) => logger.error("Mongoose error:", err));
+mongoose.connection.on("connected", () => logger.info("Connection to DB established successfully"));
+mongoose.Promise = global.Promise;
+export default () => {
+    mongoose.connect(process.env.MONGO_URI || "", dbOptions);
 };
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zZXJ2ZXIvc2VydmljZXMvZGIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7QUFBQSx3REFBZ0M7QUFDaEMsc0RBQThCO0FBRTlCLE1BQU0sU0FBUyxHQUFXO0lBQ3hCLGtCQUFrQixFQUFFLElBQUk7SUFDeEIsZUFBZSxFQUFFLElBQUk7Q0FDdEIsQ0FBQztBQUVGLGtCQUFRLENBQUMsVUFBVSxDQUFDLEVBQUUsQ0FBQyxPQUFPLEVBQUUsQ0FBQyxHQUFRLEVBQUUsRUFBRSxDQUMzQyxnQkFBTSxDQUFDLEtBQUssQ0FBQyxpQkFBaUIsRUFBRSxHQUFHLENBQUMsQ0FDckMsQ0FBQztBQUVGLGtCQUFRLENBQUMsVUFBVSxDQUFDLEVBQUUsQ0FBQyxXQUFXLEVBQUUsR0FBRyxFQUFFLENBQ3ZDLGdCQUFNLENBQUMsSUFBSSxDQUFDLDJDQUEyQyxDQUFDLENBQ3pELENBQUM7QUFFRixrQkFBUSxDQUFDLE9BQU8sR0FBRyxNQUFNLENBQUMsT0FBTyxDQUFDO0FBRWxDLGtCQUFlLEdBQUcsRUFBRTtJQUNsQixrQkFBUSxDQUFDLE9BQU8sQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFDLFNBQVMsSUFBSSxFQUFFLEVBQUUsU0FBUyxDQUFDLENBQUM7QUFDM0QsQ0FBQyxDQUFDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zZXJ2ZXIvc2VydmljZXMvZGIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxRQUFRLE1BQU0sVUFBVSxDQUFDO0FBQ2hDLE9BQU8sTUFBTSxNQUFNLFVBQVUsQ0FBQztBQUU5QixNQUFNLFNBQVMsR0FBVztJQUN4QixrQkFBa0IsRUFBRSxJQUFJO0lBQ3hCLGVBQWUsRUFBRSxJQUFJO0NBQ3RCLENBQUM7QUFFRixRQUFRLENBQUMsVUFBVSxDQUFDLEVBQUUsQ0FBQyxPQUFPLEVBQUUsQ0FBQyxHQUFRLEVBQUUsRUFBRSxDQUMzQyxNQUFNLENBQUMsS0FBSyxDQUFDLGlCQUFpQixFQUFFLEdBQUcsQ0FBQyxDQUNyQyxDQUFDO0FBRUYsUUFBUSxDQUFDLFVBQVUsQ0FBQyxFQUFFLENBQUMsV0FBVyxFQUFFLEdBQUcsRUFBRSxDQUN2QyxNQUFNLENBQUMsSUFBSSxDQUFDLDJDQUEyQyxDQUFDLENBQ3pELENBQUM7QUFFRixRQUFRLENBQUMsT0FBTyxHQUFHLE1BQU0sQ0FBQyxPQUFPLENBQUM7QUFFbEMsZUFBZSxHQUFHLEVBQUU7SUFDbEIsUUFBUSxDQUFDLE9BQU8sQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFDLFNBQVMsSUFBSSxFQUFFLEVBQUUsU0FBUyxDQUFDLENBQUM7QUFDM0QsQ0FBQyxDQUFDIn0=

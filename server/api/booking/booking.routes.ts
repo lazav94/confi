@@ -1,21 +1,24 @@
 import { Router } from "express";
+import { haveAccess } from "../../services/middleware";
 import {
   getAllBookings,
   getBookingById,
   createBooking,
   updateBooking,
-  deleteBookingById
+  deleteBookingById,
+  verifyBooking
 } from "./booking.controller";
 
 const router = Router();
 
-// TODO generate midleware to save session, only admin with the active session can list and delete booking
-
 router
-  .get("/list", getAllBookings)
-  .get("/:id", getBookingById)
-  .put("/", createBooking)
-  .post("/", updateBooking)
-  .delete("/:id", deleteBookingById);
+  //  Admin should be able to list bookings
+  .get("/list", haveAccess, getAllBookings)
+  .get("/:id", haveAccess, getBookingById)
+  // .put("/", haveAccess, createBooking)
+  .post("/", haveAccess, updateBooking)
+  // Admin should be able to delete a booking
+  .delete("/:id", haveAccess, deleteBookingById)
+  .get("/:token", verifyBooking);
 
 export default router;

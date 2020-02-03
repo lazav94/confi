@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
 import { compare } from "bcrypt";
+import { Request, Response } from "express";
 import adminService from "./admin.service";
 import { IAdmin } from "./admin.model";
 
-const saltRounds = parseInt(process.env.SALT_ROUNDS || "9", 10);
+// const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || "9", 10);
+
 // Admin login
 export async function login(req: Request, res: Response) {
   // TODO call service (DB handing)
@@ -16,6 +17,8 @@ export async function login(req: Request, res: Response) {
     const match = await compare(password, admin.password);
     if (match) {
       // Login
+      // Add session - this can be token (simple for now)
+      req.session.admin = true;
       return res.send(200);
     }
     return res
@@ -25,11 +28,7 @@ export async function login(req: Request, res: Response) {
   res.send({ error: true, errorMessage: "No matching user " });
 }
 
-export function listBookings(req: Request, res: Response) {
-  // get booking from db
-  // send to frontend
-}
-
-export function deleteBooking(req: Request, res: Response) {
-  // delete booking by req.body.id
+export async function logout(req: Request, res: Response) {
+  // logout
+  req.session.admin = null;
 }

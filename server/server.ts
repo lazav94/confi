@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import cookieSession = require("cookie-session");
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -13,15 +14,23 @@ const app: Application = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["mnm_confi:159"],
+    // Cookie Options
+    maxAge: 60 * 60 * 1000 // 1 hour
+  })
+);
 
 connectDB();
 
 routes(app);
-
 app.use("/", swaggerRoutes);
 
 app.listen(port, (error: any) => {
   if (error) {
+    logger.error("FATAL ERROR:", error);
     process.exit(-1);
   }
   logger.info(`Server is running on port ${port}`);

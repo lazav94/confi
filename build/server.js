@@ -1,26 +1,28 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-const logger_1 = __importDefault(require("./services/logger"));
-const db_1 = __importDefault(require("./services/db"));
-const swagger_1 = __importDefault(require("./swagger"));
-const routes_1 = __importDefault(require("./routes"));
+import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
+import logger from "./services/logger";
+import connectDB from "./services/db";
+import swaggerRoutes from "./swagger";
+import routes from "./routes";
 const port = parseInt(process.env.PORT || "8080", 10);
-const app = express_1.default();
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
-db_1.default();
-routes_1.default(app);
-app.use("/", swagger_1.default);
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieSession({
+    name: "session",
+    keys: ["mnm_confi:159"],
+    // Cookie Options
+    maxAge: 60 * 60 * 1000 // 1 hour
+}));
+connectDB();
+routes(app);
+app.use("/", swaggerRoutes);
 app.listen(port, (error) => {
     if (error) {
+        logger.error("FATAL ERROR:", error);
         process.exit(-1);
     }
-    logger_1.default.info(`Server is running on port ${port}`);
+    logger.info(`Server is running on port ${port}`);
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VydmVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc2VydmVyL3NlcnZlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7OztBQUFBLHNEQUErQztBQUMvQyxvREFBNEI7QUFDNUIsZ0JBQU0sQ0FBQyxNQUFNLEVBQUUsQ0FBQztBQUVoQiwrREFBdUM7QUFDdkMsdURBQXNDO0FBQ3RDLHdEQUFzQztBQUN0QyxzREFBOEI7QUFFOUIsTUFBTSxJQUFJLEdBQVcsUUFBUSxDQUFDLE9BQU8sQ0FBQyxHQUFHLENBQUMsSUFBSSxJQUFJLE1BQU0sRUFBRSxFQUFFLENBQUMsQ0FBQztBQUU5RCxNQUFNLEdBQUcsR0FBZ0IsaUJBQU8sRUFBRSxDQUFDO0FBRW5DLEdBQUcsQ0FBQyxHQUFHLENBQUMsaUJBQU8sQ0FBQyxJQUFJLEVBQUUsQ0FBQyxDQUFDO0FBQ3hCLEdBQUcsQ0FBQyxHQUFHLENBQUMsaUJBQU8sQ0FBQyxVQUFVLENBQUMsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUMsQ0FBQyxDQUFDO0FBRWhELFlBQVMsRUFBRSxDQUFDO0FBRVosZ0JBQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQztBQUVaLEdBQUcsQ0FBQyxHQUFHLENBQUMsR0FBRyxFQUFFLGlCQUFhLENBQUMsQ0FBQztBQUU1QixHQUFHLENBQUMsTUFBTSxDQUFDLElBQUksRUFBRSxDQUFDLEtBQVUsRUFBRSxFQUFFO0lBQzlCLElBQUksS0FBSyxFQUFFO1FBQ1QsT0FBTyxDQUFDLElBQUksQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDO0tBQ2xCO0lBQ0QsZ0JBQU0sQ0FBQyxJQUFJLENBQUMsNkJBQTZCLElBQUksRUFBRSxDQUFDLENBQUM7QUFDbkQsQ0FBQyxDQUFDLENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VydmVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc2VydmVyL3NlcnZlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLE9BQXdCLE1BQU0sU0FBUyxDQUFDO0FBRS9DLE9BQU8sTUFBTSxNQUFNLFFBQVEsQ0FBQztBQUM1QixNQUFNLENBQUMsTUFBTSxFQUFFLENBQUM7QUFFaEIsT0FBTyxNQUFNLE1BQU0sbUJBQW1CLENBQUM7QUFDdkMsT0FBTyxTQUFTLE1BQU0sZUFBZSxDQUFDO0FBQ3RDLE9BQU8sYUFBYSxNQUFNLFdBQVcsQ0FBQztBQUN0QyxPQUFPLE1BQU0sTUFBTSxVQUFVLENBQUM7QUFFOUIsTUFBTSxJQUFJLEdBQVcsUUFBUSxDQUFDLE9BQU8sQ0FBQyxHQUFHLENBQUMsSUFBSSxJQUFJLE1BQU0sRUFBRSxFQUFFLENBQUMsQ0FBQztBQUU5RCxNQUFNLEdBQUcsR0FBZ0IsT0FBTyxFQUFFLENBQUM7QUFFbkMsR0FBRyxDQUFDLEdBQUcsQ0FBQyxPQUFPLENBQUMsSUFBSSxFQUFFLENBQUMsQ0FBQztBQUN4QixHQUFHLENBQUMsR0FBRyxDQUFDLE9BQU8sQ0FBQyxVQUFVLENBQUMsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUMsQ0FBQyxDQUFDO0FBQ2hELEdBQUcsQ0FBQyxHQUFHLENBQ0wsYUFBYSxDQUFDO0lBQ1osSUFBSSxFQUFFLFNBQVM7SUFDZixJQUFJLEVBQUUsQ0FBQyxlQUFlLENBQUM7SUFDdkIsaUJBQWlCO0lBQ2pCLE1BQU0sRUFBRSxFQUFFLEdBQUcsRUFBRSxHQUFHLElBQUksQ0FBQyxTQUFTO0NBQ2pDLENBQUMsQ0FDSCxDQUFDO0FBRUYsU0FBUyxFQUFFLENBQUM7QUFFWixNQUFNLENBQUMsR0FBRyxDQUFDLENBQUM7QUFDWixHQUFHLENBQUMsR0FBRyxDQUFDLEdBQUcsRUFBRSxhQUFhLENBQUMsQ0FBQztBQUU1QixHQUFHLENBQUMsTUFBTSxDQUFDLElBQUksRUFBRSxDQUFDLEtBQVUsRUFBRSxFQUFFO0lBQzlCLElBQUksS0FBSyxFQUFFO1FBQ1QsTUFBTSxDQUFDLEtBQUssQ0FBQyxjQUFjLEVBQUUsS0FBSyxDQUFDLENBQUM7UUFDcEMsT0FBTyxDQUFDLElBQUksQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDO0tBQ2xCO0lBQ0QsTUFBTSxDQUFDLElBQUksQ0FBQyw2QkFBNkIsSUFBSSxFQUFFLENBQUMsQ0FBQztBQUNuRCxDQUFDLENBQUMsQ0FBQyJ9
