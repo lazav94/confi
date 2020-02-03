@@ -12,7 +12,6 @@ export async function login(req: Request, res: Response) {
 
   const admin: IAdmin | null = await adminService.getAdminByUsername(username);
   if (admin) {
-    res.sendStatus(200);
     const match = await compare(password, admin.password);
     if (match) {
       // Login

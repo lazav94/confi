@@ -6,7 +6,7 @@ export interface IBooking extends Document {
   email: string;
   phone: string;
   token?: string;
-  verified: boolean;
+  verified?: boolean;
 }
 
 const BookingSchema: Schema = new Schema({

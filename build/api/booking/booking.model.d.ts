@@ -5,7 +5,7 @@ export interface IBooking extends Document {
     email: string;
     phone: string;
     token?: string;
-    verified: boolean;
+    verified?: boolean;
 }
 declare const _default: mongoose.Model<IBooking, {}>;
 export default _default;

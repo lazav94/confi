@@ -4,7 +4,8 @@ import {
   getBookingById,
   createBooking,
   updateBooking,
-  deleteBookingById
+  deleteBookingById,
+  verification
 } from "./booking.controller";
 
 const router = Router();
@@ -16,6 +17,7 @@ router
   .get("/:id", getBookingById)
   .put("/", createBooking)
   .post("/", updateBooking)
-  .delete("/:id", deleteBookingById);
+  .delete("/:id", deleteBookingById)
+  .get("/verification/:token", verification);
 
 export default router;

@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import logger from "../../services/logger";
 import BookingService from "./booking.service";
 import { IBooking } from "./booking.model";
-// TODO maybe use jwt instead or custome algorithm for hasing
-import bcrypt from "bcrypt";
 // TODO use custome solution instead validator
 import validator from "validator";
-
+import uuid from "uuid";
+import sendEmail from "../../services/mailer";
 import UserRegisterBody from "../../models/userRegisterBody.model";
 import ErrorObject from "../../models/error.model";
 import bookingService from "./booking.service";
+import { MailOptions } from "nodemailer/lib/sendmail-transport";
+import { generateVerificationEmail } from "../../services/utils";
 
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
@@ -64,12 +64,12 @@ export const deleteBookingById = async (req: Request, res: Response) => {
 };
 
 const checkEmptyFields = (fields: UserRegisterBody) => {
-  const { firstName, lastName, email, phone } = fields;
+  const { firstname, lastname, email, phone } = fields;
   let errorMessage = "";
-  if (!firstName) {
+  if (!firstname) {
     errorMessage += "Please enter your first name";
   }
-  if (!lastName) {
+  if (!lastname) {
     errorMessage += "Please enter your last name";
   }
   if (!email) {
@@ -85,12 +85,12 @@ const checkEmptyFields = (fields: UserRegisterBody) => {
 };
 
 // Admin login
-export function register(req: Request, res: Response) {
+export async function register(req: Request, res: Response) {
   // TODO call service (DB handing)
 
   const errorObject: ErrorObject = checkEmptyFields(req.body);
 
-  const { firstName, lastName, email, phone } = req.body;
+  const { firstname, lastname, email, phone } = req.body;
 
   if (!validator.isEmail(email)) {
     errorObject.errorMessage += "Not valid email format";
@@ -102,11 +102,39 @@ export function register(req: Request, res: Response) {
   if (errorObject.errorMessage) {
     return res.status(400).send(errorObject);
   }
+  // Generate token - can use JWT or hashing for more secure approach
+  const token = uuid();
+  const verificationURL = `${process.env.URL}/booking/verification/${token}`;
+  const mailOptions: MailOptions = {
+    from: "Confi",
+    to: email,
+    subject: "Verification Email",
+    html: generateVerificationEmail(verificationURL)
+  };
+  // Sending email
+  await sendEmail(mailOptions);
 
-  // const criptedPassword = await bcrypt.decode(password);
+  // Create new booking with token and flag verified set to false
+  await BookingService.createBooking({ ...req.body, token });
 
-  // Get user from db by username
-  // compare passwords
-  // 200 or not good
+  res.sendStatus(200);
+}
+
+export async function verification(req: Request, res: Response) {
+  const { token } = req.params;
+  if (!token) {
+    return res.send({ error: true, errorMessage: "Token invalid" });
+  }
+  // get booking by token
+  const booking: IBooking | null = await BookingService.getBookingByToken(
+    token
+  );
+  if (!booking) {
+    return res.send({ error: true, errorMessage: "Token invalid" });
+  }
+
+  booking.verified = true;
+  await booking.save();
+
   res.sendStatus(200);
 }
