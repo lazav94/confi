@@ -1,7 +1,7 @@
 import express, { Application } from "express";
-import cookieSession = require("cookie-session");
 import dotenv from "dotenv";
-dotenv.config();
+import cookieSession from "cookie-session";
+dotenv.config({});
 
 import logger from "./services/logger";
 import connectDB from "./services/db";

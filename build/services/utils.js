@@ -1,2 +1,2 @@
-"use strict";
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXRpbHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zZXJ2ZXIvc2VydmljZXMvdXRpbHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiJ9
+export const generateVerificationEmail = (url) => `<p>Click here to verify your registation <a href="${url}"=Verification link</a></p>`;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXRpbHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zZXJ2ZXIvc2VydmljZXMvdXRpbHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsTUFBTSxDQUFDLE1BQU0seUJBQXlCLEdBQUcsQ0FBQyxHQUFXLEVBQVUsRUFBRSxDQUMvRCxxREFBcUQsR0FBRyw2QkFBNkIsQ0FBQyJ9

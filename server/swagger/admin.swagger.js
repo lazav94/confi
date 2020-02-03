@@ -2,8 +2,8 @@
 /**
  * @swagger
  * /:
- *   get:
- *     description: Say hello to the world
+ *   post:
+ *     description: Admin login
  *     produces:
  *       - text/plain
  *     responses:
@@ -11,4 +11,9 @@
  *         description: "A beautiful hello world"
  *         schema:
  *           type: "string"
+ *       400:
+ *         description: "Error"
+ *         schema:
+ *           type: "object"
+ *
  */

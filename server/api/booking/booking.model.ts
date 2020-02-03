@@ -1,12 +1,13 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IBooking extends Document {
+  conferenceid: string;
   firstname: string;
   lastname: string;
   email: string;
   phone: string;
   token?: string;
-  verified: boolean;
+  verified?: boolean;
 }
 
 const BookingSchema: Schema = new Schema({

@@ -7,18 +7,17 @@ import { IAdmin } from "./admin.model";
 
 // Admin login
 export async function login(req: Request, res: Response) {
-  // TODO call service (DB handing)
-
   const { username, password } = req.body;
 
   const admin: IAdmin | null = await adminService.getAdminByUsername(username);
   if (admin) {
-    res.sendStatus(200);
     const match = await compare(password, admin.password);
     if (match) {
       // Login
       // Add session - this can be token (simple for now)
-      req.session.admin = true;
+      if (req?.session?.admin) {
+        req.session.admin = true;
+      }
       return res.send(200);
     }
     return res
@@ -30,5 +29,7 @@ export async function login(req: Request, res: Response) {
 
 export async function logout(req: Request, res: Response) {
   // logout
-  req.session.admin = null;
+  if (req?.session?.admin) {
+    req.session.admin = null;
+  }
 }

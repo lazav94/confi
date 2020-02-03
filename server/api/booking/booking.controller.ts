@@ -6,14 +6,17 @@ import bcrypt from "bcrypt";
 import logger from "../../services/logger";
 import BookingService from "./booking.service";
 import { IBooking } from "./booking.model";
-
+import uuid from "uuid";
+import sendEmail from "../../services/mailer";
 import UserRegisterBody from "../../models/userRegisterBody.model";
 import ErrorObject from "../../models/error.model";
-import bookingService from "./booking.service";
+import { MailOptions } from "nodemailer/lib/sendmail-transport";
+import { generateVerificationEmail } from "../../services/utils";
+import conferenceService from "../conference/conference.service";
 
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
-    const bookings = await bookingService.getAllBookings();
+    const bookings = await BookingService.getAllBookings();
     res.send(bookings).status(200);
   } catch (error) {
     return res.send({ error: true, errorObject: error }).status(400);
@@ -66,12 +69,12 @@ export const deleteBookingById = async (req: Request, res: Response) => {
 };
 
 const checkEmptyFields = (fields: UserRegisterBody) => {
-  const { firstName, lastName, email, phone } = fields;
+  const { firstname, lastname, email, phone } = fields;
   let errorMessage = "";
-  if (!firstName) {
+  if (!firstname) {
     errorMessage += "Please enter your first name";
   }
-  if (!lastName) {
+  if (!lastname) {
     errorMessage += "Please enter your last name";
   }
   if (!email) {
@@ -86,15 +89,18 @@ const checkEmptyFields = (fields: UserRegisterBody) => {
   };
 };
 
-const generateURL = () => `${req.host}/booking/${uuid}`;
 // Admin login
-export function register(req: Request, res: Response) {
-  // TODO call service (DB handing)
-
+export async function register(req: Request, res: Response) {
   const errorObject: ErrorObject = checkEmptyFields(req.body);
 
-  const { firstname, lastname, email, phone, conferenceid } = req.body;
+  const { email, phone, conferenceid } = req.body;
 
+  if (!conferenceid) {
+    return res.status(500).send({
+      error: true,
+      errorMessage: "Something wrong with request, conference id not sent"
+    });
+  }
   if (!validator.isEmail(email)) {
     errorObject.errorMessage += "Not valid email format";
   }
@@ -106,16 +112,41 @@ export function register(req: Request, res: Response) {
     return res.status(400).send(errorObject);
   }
 
-  // Generate URL with tocken
-  // Send email with tocken
+  const conference = await conferenceService.getConferenceById(conferenceid);
+  if (!conference) {
+    return res.status(404).send({
+      error: true,
+      errorMessage: "Something wrong, conference not found"
+    });
+  }
+  // Generate token - can use JWT or hashing for more secure approach
+  const token = uuid();
+  const mailOptions: MailOptions = {
+    from: "Confi",
+    to: email,
+    subject: "Verification Email",
+    html: generateVerificationEmail(token)
+  };
+  // Sending email
+  await sendEmail(mailOptions);
+
+  // Create new booking with token and flag verified set to false
+  await BookingService.createBooking({ ...req.body, token });
 
   res.sendStatus(200);
 }
 
-export const verifyBooking = (req, res) => {
-  // Check valid token
-  // mark bookin as verified
+export const verification = async (req: Request, res: Response) => {
+  const { token } = req.params;
+
+  if (!token) {
+    return res.send({ error: true, errorMessage: "Invalid token" });
+  }
+  const booking = await BookingService.getBookingByToken(token);
+  if (!booking) {
+    return res.send({ error: true, errorMessage: "Invalid token" });
+  }
+  booking.verified = true;
+  await booking.save();
   res.sendStatus(200);
 };
-
-// TODO implement verifiaation route

@@ -1,14 +1,13 @@
-// TODO generate midleware to save session, only admin with the active session can list and delete booking (cookies or jwt)
 export const haveAccess = (req, res, next) => {
-    if (req.session.admin === true) {
+    // req?.session?.admin
+    if (req.session && req.session.admin && req.session.admin === true) {
         return next();
     }
-    // send some message to fronend, like your session expired
     res
         .send({
         error: true,
-        errorMessage: "Your session expired, please log in agaoin"
+        errorMessage: "Your session expired, please log in again"
     })
         .status(400);
 };
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWlkZGxld2FyZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NlcnZlci9zZXJ2aWNlcy9taWRkbGV3YXJlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBLDJIQUEySDtBQUMzSCxNQUFNLENBQUMsTUFBTSxVQUFVLEdBQUcsQ0FBQyxHQUFZLEVBQUUsR0FBYSxFQUFFLElBQWMsRUFBRSxFQUFFO0lBQ3hFLElBQUksR0FBRyxDQUFDLE9BQU8sQ0FBQyxLQUFLLEtBQUssSUFBSSxFQUFFO1FBQzlCLE9BQU8sSUFBSSxFQUFFLENBQUM7S0FDZjtJQUNELDBEQUEwRDtJQUMxRCxHQUFHO1NBQ0EsSUFBSSxDQUFDO1FBQ0osS0FBSyxFQUFFLElBQUk7UUFDWCxZQUFZLEVBQUUsNENBQTRDO0tBQzNELENBQUM7U0FDRCxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUM7QUFDakIsQ0FBQyxDQUFDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWlkZGxld2FyZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NlcnZlci9zZXJ2aWNlcy9taWRkbGV3YXJlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBLE1BQU0sQ0FBQyxNQUFNLFVBQVUsR0FBRyxDQUFDLEdBQVksRUFBRSxHQUFhLEVBQUUsSUFBYyxFQUFFLEVBQUU7SUFDeEUsc0JBQXNCO0lBQ3RCLElBQUksR0FBRyxDQUFDLE9BQU8sSUFBSSxHQUFHLENBQUMsT0FBTyxDQUFDLEtBQUssSUFBSSxHQUFHLENBQUMsT0FBTyxDQUFDLEtBQUssS0FBSyxJQUFJLEVBQUU7UUFDbEUsT0FBTyxJQUFJLEVBQUUsQ0FBQztLQUNmO0lBRUQsR0FBRztTQUNBLElBQUksQ0FBQztRQUNKLEtBQUssRUFBRSxJQUFJO1FBQ1gsWUFBWSxFQUFFLDJDQUEyQztLQUMxRCxDQUFDO1NBQ0QsTUFBTSxDQUFDLEdBQUcsQ0FBQyxDQUFDO0FBQ2pCLENBQUMsQ0FBQyJ9

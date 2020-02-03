@@ -16,6 +16,6 @@
 
 ---
 
+### Not implemented
 - Swagger
-- Implement nodemailer and send email with (G-Mail)
-- Create mock inviroment for unit test
+- Test

@@ -6,7 +6,7 @@ import {
   createBooking,
   updateBooking,
   deleteBookingById,
-  verifyBooking
+  verification
 } from "./booking.controller";
 
 const router = Router();
@@ -19,6 +19,6 @@ router
   .post("/", haveAccess, updateBooking)
   // Admin should be able to delete a booking
   .delete("/:id", haveAccess, deleteBookingById)
-  .get("/:token", verifyBooking);
+  .get("/verificaton/:token", verification);
 
 export default router;
