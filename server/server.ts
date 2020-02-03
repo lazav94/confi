@@ -5,7 +5,7 @@ dotenv.config({});
 
 import logger from "./services/logger";
 import connectDB from "./services/db";
-import swaggerRoutes from "./swagger";
+import swaggerRoutes from "./swagger/index";
 import routes from "./routes";
 
 const port: number = parseInt(process.env.PORT || "8080", 10);
